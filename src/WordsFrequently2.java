@@ -21,10 +21,20 @@ public class WordsFrequently2 {
 
     public static void makeReadText(String nameFile) {
         try(BufferedReader br = new BufferedReader(new FileReader(nameFile))) {
-            do {
-                if(br.readLine() != null) text.append(br.readLine());
-            } while(br.readLine() != null);
+            String str;
 
+
+            // Aqui lemos cada linha do texto e armazenamos em uma String o valor da linha lida (str), e depois adicionamos em uma instacia
+            // de StringBuilder, para adicionar cada linha de texto que foi armazenado em (str).
+            do {
+                if((str = br.readLine()) != null) text.append(str + " ");
+            } while(str != null);
+
+            System.out.println("\n Text Complet: \n" + text.toString());
+
+            // Depois preciso converter a instancia de StringBuilder que armazena as linhas do texto em um array de cada palavra, ou seja
+            // um array de String, entao pegamos a variavel (text) e convertemos em String para poder separar cada elemento do array
+            // de string a partir do caracter de " " (Espaço).
             wordsSeparate = text.toString().split(" ");
             Arrays.sort(wordsSeparate); // Deixa em ordem as palavras.
             System.out.println(Arrays.toString(wordsSeparate));
@@ -39,10 +49,11 @@ public class WordsFrequently2 {
         int cont;
 
         for(String str: wordsSeparate) {
+            // Verifica se já existe algum dado com a key com valor de String (Palavra)
             if(listWords.containsKey(str)) {
                // Caso contenha a palavra já eu quero que aumente do value da quantidade em 1, a qual é Integer nesse caso.
                 cont = listWords.get(str);
-                listWords.replace(str, cont + 1);
+                listWords.replace(str, cont + 1); // Aumenta em +1 a quantidade de vezes que foi observada
                 continue;
             }
 
@@ -50,6 +61,9 @@ public class WordsFrequently2 {
             // achada.
         }
 
+        System.out.println("\n Hash - " + listWords.toString() + "\n");
+
+        // Aqui escreve em arquivo quantas vezes cada palavra foi observada.
         try(FileWriter fw = new FileWriter("analyseText.txt")) {
             for(Map.Entry<String, Integer> entry : listWords.entrySet()) {
                 fw.write(entry.getKey() + " → " + entry.getValue() + "\n");
